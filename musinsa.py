@@ -4,6 +4,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import urllib.request
 
+# 이전 페이지로 돌아가는 driver.back()과 driver.execute_script("window.history.go(-1)") 함수가 작동이 안 된다.
+
 category = {"반소매 티셔츠":"001001", "셔츠/블라우스":"001002", "피케/카라티 셔츠":"001003",
             "후드 티셔츠":"001004", "맨투맨/스웨트 셔츠":"001005", "니트/스웨터":'001006',
             "기타 상의":"001008", "긴소매 티셔츠":"001010", "후드 집업":"002022", "블루종/MA-1":"002001",
@@ -32,11 +34,10 @@ class musinsa_crw():
             # try:
             driver.find_element_by_css_selector(f'#searchList > li:nth-child({num}) > div.li_inner > div.list_img > a > img').click()
             time.sleep(3)
-            driver.back()
             # elements = driver.find_element_by_xpath('//*[@id="bigimg"]').get_attribute('src')
             # urllib.request.urlretrieve(elements, os.path.join("musinsa_img", self.clothes, self.clothes + "_" + str(num) + ".jpg"))
             # driver.find_element_by_xpath('/html/body/div[15]/div[2]/button/svg').click
-  
+            driver.back() 
             num += 1
             # except:
             #     print("크롤링 종료")
