@@ -1,10 +1,12 @@
 import os
 import time
+from datetime import timedelta
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import urllib.request
 
-# 이전 페이지로 돌아가는 driver.back()과 driver.execute_script("window.history.go(-1)") 함수가 작동이 안 된다.
+# 해결한 부분 -> driver.back() 뒤로 보내기를 새 탭 생성으로 대체
+# 해결해야 할 부분 -> 페이지 넘기기, 저장 할 수 만큼 저장하기
 
 category = {"반소매 티셔츠":"001001", "셔츠/블라우스":"001002", "피케/카라티 셔츠":"001003",
             "후드 티셔츠":"001004", "맨투맨/스웨트 셔츠":"001005", "니트/스웨터":'001006',
@@ -18,44 +20,61 @@ category = {"반소매 티셔츠":"001001", "셔츠/블라우스":"001002", "피
 
 
 class musinsa_crw():
-    def __init__(self, category, URL, clothes):
+    def __init__(self, category, URL, clothes, img_len):
         self.category = category
         self.URL = URL
         self.clothes = clothes
+        self.img_len = img_len
     
     def crw(self):
+        
         driver = webdriver.Chrome('C:\\Users\\user\\workspace\\chromedriver\\chromedriver.exe')
         driver.implicitly_wait(3)
         driver.get(self.URL + self.category[self.clothes])
         self.clothes = self.clothes.replace(' ', '_')
         os.makedirs("musinsa_img/" + self.clothes, exist_ok = True)
-        num = 1
-        while True:
-            # try:
-            driver.find_element_by_css_selector(f'#searchList > li:nth-child({num}) > div.li_inner > div.list_img > a > img').click()
-            time.sleep(3)
-            # elements = driver.find_element_by_xpath('//*[@id="bigimg"]').get_attribute('src')
-            # urllib.request.urlretrieve(elements, os.path.join("musinsa_img", self.clothes, self.clothes + "_" + str(num) + ".jpg"))
-            # driver.find_element_by_xpath('/html/body/div[15]/div[2]/button/svg').click
-            driver.back() 
-            num += 1
-            # except:
-            #     print("크롤링 종료")
-            #     break
-            # driver.close()
+        pages = int((self.img_len-1)/90) + 1
+        page_count = 1
 
-clothes = input("검색할 옷:")
+        img_list = []
+        while True:
+            for i in range(3, 13):
+                driver.find_element_by_css_selector(f'#goods_list > div.boxed-list-wrapper > div.sorter-box.box > div > div > a:nth-child({i})').click()
+                page_num = 1
+                for _ in range(img_len):
+                    try:
+                        target = driver.find_element_by_css_selector(f'#searchList > li:nth-child({page_num}) > div.li_inner > div.list_img > a')
+                        target.send_keys(Keys.CONTROL+'\n')
+                        driver.switch_to.window(driver.window_handles[1])
+                        
+                        elements = driver.find_element_by_xpath('//*[@id="bigimg"]')
+                        img_list.append(elements.get_attribute('src'))
+                        # urllib.request.urlretrieve(elements, os.path.join("musinsa_img", self.clothes, self.clothes+"_"+str(page_count)+"_"+str   page_num)+ ".jpg")) 
+                        driver.close()
+                        driver.switch_to.window(driver.window_handles[0])
+                        page_num += 1
+
+                    except:
+                        print("-------크롤링 종료-------")
+                        break
+                page_count += 1 
+            if page_count == pages:
+                break
+    
+        for i in range(img_list):
+            urllib.request.urlretrieve(img_list[i], os.path.join("musinsa_img", self.clothes, self.clothes+"_"+str(i)+ ".jpg"))
+
+    # def save_img(self):
+    #     img_list = []
+    #     crw(img_list)
+    
+    #     for i in range(img_list):
+    #         urllib.request.urlretrieve(img_list[i], os.path.join("musinsa_img", self.clothes, self.clothes+"_"+str(i)+ ".jpg"))
+
+
+clothes = input("검색할 옷: ")
+img_len = int(input("다운로드 이미지 수: "))
 URL = 'https://www.musinsa.com/category/'
 
-musinsa = musinsa_crw(category, URL, clothes)
+musinsa = musinsa_crw(category, URL, clothes, img_len)
 musinsa.crw()
-
-
-
-
-
-
-
-#searchList > li:nth-child(1) > div.li_inner > div.list_img > a > img
-#searchList > li:nth-child(2) > div.li_inner > div.list_img > a > img
-
