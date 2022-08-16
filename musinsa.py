@@ -73,6 +73,7 @@ class musinsa_crw:
 
 
 clothes = input("검색할 옷: ")
+
 img_len = int(input("다운로드 이미지 수: "))
 URL = 'https://www.musinsa.com/category/'
 driver = webdriver.Chrome('C:\\Users\\user\\workspace\\chromedriver\\chromedriver.exe')
