@@ -38,7 +38,7 @@ class musinsa_crw:
             except:
                 print(f'--{page} 페이지 완료--')
                 break
-
+        
     def loop_page(self, pages):
         for page in range(1, pages + 1):
             page_number = page % 10 + 2
@@ -76,6 +76,11 @@ clothes = input("검색할 옷: ")
 
 img_len = int(input("다운로드 이미지 수: "))
 URL = 'https://www.musinsa.com/category/'
+
+# options = webdriver.ChromeOptions()
+# options.add_experimental_option("excludeSwitches", ["enable-logging"])
+# browser = webdriver.Chrome(options=options)
+
 driver = webdriver.Chrome('C:\\Users\\user\\workspace\\chromedriver\\chromedriver.exe')
 
 musinsa = musinsa_crw(category, URL, clothes, img_len, driver)
