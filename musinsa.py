@@ -6,16 +6,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 import urllib.request
 
-category = {"반팔티":"001001", "셔츠,블라우스":"001002", "카라티":"001003",
-            "후드티":"001004", "맨투맨":"001005", "니트 스웨터":'001006',
-            "기타 상의":"001008", "긴팔티":"001010", "후드 집업":"002022", "블루종":"002001",
-            "레더 재킷":"002002", "무스탕":"002025", "트러커 재킷":"002017",
-            "블레이저 재킷":"002003", "가디건":"002020", "플리스":"002023",
-            "트레이닝 재킷":"002018", "바시티 재킷":"002004", "환절기 코트":"002008", "싱글 코트":"002007",
-            "더블 코트":"002024", "롱패딩":"002013", "숏패딩":"002012", "코치(나일론) 재킷":"002006",
-            "데님 팬츠":"003002", "숏팬츠":"003009", "코튼 팬츠":"003007", "레깅스":"003005",
-            "슬랙스":"003008", "트레이닝 팬츠":"003004", "기타 바지":"003006"}            
-
 class musinsa_crw:
     def __init__(self, category, URL, clothes, page_len, driver):
         self.category = category
@@ -51,7 +41,7 @@ class musinsa_crw:
     # 진열 페이지 넘기기
     def loop_page(self, pages):
         for page in range(1, pages + 1):
-            page_number = page % 10 + 2  
+            page_number = page % 10 + 2  # 3에서 
 
             # 팝업 생성 시 제거 후 진행
             time.sleep(3)
@@ -67,7 +57,8 @@ class musinsa_crw:
             if page_number != 2:
                 self.driver.find_element_by_css_selector(f'#goods_list > div.boxed-list-wrapper > div.sorter-box.box > div > div > a:nth-child({page_number})').click()
                 self.crawling(page)
-            # 마지막 10페이지 이후 다음 페이지로 이동
+
+            # page_number가 2일 경우 10 페이지 이동 후 "다음" 클릭
             else:
                 self.driver.find_element_by_css_selector('#goods_list > div.boxed-list-wrapper > div.sorter-box.box > div > div > a:nth-child(12)').click() # 10 페이지
                 self.crawling(page)
@@ -77,8 +68,7 @@ class musinsa_crw:
         self.driver.close()
 
 
-
-    def musinsa_crw(self):   
+    def page_select(self):   
         self.driver.implicitly_wait(3)
         self.driver.get(self.URL + self.category[self.clothes])
         self.clothes = self.clothes.replace(' ', '_')
@@ -94,6 +84,17 @@ class musinsa_crw:
         else:
             print(f"{self.page_len} 페이지까지 크롤링 합니다.")
             self.loop_page(self.page_len)
+
+
+category = {"반팔티":"001001", "셔츠,블라우스":"001002", "카라티":"001003",
+            "후드티":"001004", "맨투맨":"001005", "니트 스웨터":'001006',
+            "기타 상의":"001008", "긴팔티":"001010", "후드 집업":"002022", "블루종":"002001",
+            "레더 재킷":"002002", "무스탕":"002025", "트러커 재킷":"002017",
+            "블레이저 재킷":"002003", "가디건":"002020", "플리스":"002023",
+            "트레이닝 재킷":"002018", "바시티 재킷":"002004", "환절기 코트":"002008", "싱글 코트":"002007",
+            "더블 코트":"002024", "롱패딩":"002013", "숏패딩":"002012", "코치(나일론) 재킷":"002006",
+            "데님 팬츠":"003002", "숏팬츠":"003009", "코튼 팬츠":"003007", "레깅스":"003005",
+            "슬랙스":"003008", "트레이닝 팬츠":"003004", "기타 바지":"003006"}            
 
 
 print('''
@@ -115,14 +116,15 @@ print('''
 -------------------------------------------------------------
 ''')
 
+
 clothes = input("가져올 의류: ")
-
 page_len = int(input("페이지 수 (한 페이지에 90개): "))
-URL = 'https://www.musinsa.com/category/'
 
+URL = 'https://www.musinsa.com/category/'
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
 driver = webdriver.Chrome('C:\\Users\\user\\workspace\\chromedriver\\chromedriver.exe', chrome_options = options)
 
 musinsa = musinsa_crw(category, URL, clothes, page_len, driver)
-musinsa.musinsa_crw()
+musinsa.page_select()
+
