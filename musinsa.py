@@ -78,7 +78,7 @@ class musinsa_crw:
         max_number = self.driver.find_element_by_xpath('//*[@id="goods_list"]/div[2]/div[2]/span[8]/span[1]')
         max_page = int(max_number.text)  
         
-        if max_page <= self.page_len:
+        if max_page < self.page_len:
             print(f"페이지 수가 적어 {max_page} 페이지까지 크롤링 합니다.")
             self.loop_page(max_page)
         else:
