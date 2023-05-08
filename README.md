@@ -12,5 +12,4 @@
 
 정확도를 올리기 위해 이미지의 배경 [rembg](https://github.com/danielgatis/rembg)를 통해 제거
 
-<img width="258" alt="스크린샷 2023-04-23 오후 6 37 33" src="https://user-images.githubusercontent.com/70461025/236800740-5f88833c-2af9-4931-8d10-682058a9d3d4.png">
-
+![re_긴팔티_1_63](https://user-images.githubusercontent.com/70461025/236801699-88468fa1-8ab1-49a5-b89c-d949c35e3248.png)
