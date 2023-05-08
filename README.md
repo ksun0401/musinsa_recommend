@@ -6,4 +6,10 @@
 
 ### 1. 파이프 라인
 
+<img width="1401" alt="스크린샷 2023-05-08 오후 7 22 12" src="https://user-images.githubusercontent.com/70461025/236800205-9e54c956-ea07-48f7-97d4-a25b3b5197e9.png">
+
+### 2. 진행 상황
+
+이미지 전처리 단계
+
 
