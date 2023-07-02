@@ -6,7 +6,6 @@
 
 ### 1. 파이프 라인
 
-<img width="1401" alt="스크린샷 2023-05-08 오후 7 22 12" src="https://github.com/ksun0401/musinsa_recommend/assets/70461025/b2772c7b-6768-492b-83a1-c60cf0f756b2.png">
 ![그림1](https://github.com/ksun0401/musinsa_recommend/assets/70461025/97bb4ae6-2516-4d87-9fba-bd710ec0a4f4)
 
 
